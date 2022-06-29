@@ -19,17 +19,23 @@ function getElements(response) {
     $('.showTemp').text(`The temperature in Fahrenheit is ${response.main.temp} degrees.`);
     $('.showCloud').text(`The cloud condition is ${response.weather[0].description}.`);
   } else {
-    $('.showErrors').text(`There was an error processing your request: ${response.message}`);
+    $('.showErrors').text(`There was an error processing your request: ${response}`);
   }
+}
+
+async function makeApiCall(city) {
+  const response = await WeatherService.getWeather(city);
+  getElements(response);
 }
 
 $(document).ready(function() {
   $('#weatherLocation').click(function() {
     let city = $('#location').val();
     clearFields();
-    WeatherService.getWeather(city)
-      .then(function(response) {
-        getElements(response);
-      });
+    makeApiCall(city);
     });
-  });
+});
+
+
+
+
